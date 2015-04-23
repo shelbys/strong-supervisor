@@ -12,10 +12,17 @@ var assert = require('assert');
 var config = require('../lib/config'); // May exit, depending on argv
 var log = config.logger;
 
+if (config.enableTracing) {
+  var tracer = require('../lib/tracer');
+  var traceObject = require('../lib/trace-object');
+  tracer(traceObject.tracerOptions);
+}
+
 var agent = require('../lib/agent');
 var agentOptions = {
   quiet: config.isWorker, // Quiet in worker, to avoid repeated log messages
   logger: config.logger,
+  strongTracer: tracer(),
 };
 
 switch (config.profile) {
@@ -52,12 +59,6 @@ switch (config.profile) {
 
 if ((config.clustered && config.isMaster) || config.detach) {
   return config.start();
-}
-
-if (config.enableTracing) {
-  var tracer = require('../lib/tracer');
-  var traceObject = require('../lib/trace-object');
-  tracer(traceObject.tracerOptions);
 }
 
 config.sendExpressRecords();
