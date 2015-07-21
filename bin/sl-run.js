@@ -11,11 +11,18 @@ process.on('disconnect', function() {
 var assert = require('assert');
 var config = require('../lib/config'); // May exit, depending on argv
 var log = config.logger;
+var tracer = require('../lib/tracer');
+
+if (config.enableTracing && config.isWorker) {
+  if (!tracer.start())
+    log.error('supervisor failed to enable tracing');
+}
 
 var agent = require('../lib/agent');
 var agentOptions = {
   quiet: config.isWorker, // Quiet in worker, to avoid repeated log messages
   logger: config.logger,
+  strongTracer: tracer(),
 };
 
 switch (config.profile) {
@@ -54,19 +61,11 @@ if ((config.clustered && config.isMaster) || config.detach) {
   return config.start();
 }
 
-if (config.enableTracing) {
-  var tracer = require('../lib/tracer');
-  var traceObject = require('../lib/trace-object');
-  tracer(traceObject.tracerOptions);
-}
-
-config.sendExpressRecords();
 config.sendMetrics();
-config.sendStatusWd();
-config.sendTraceObject();
-config.sendTraces();
 
-if (!config.clustered) {
+if (config.clustered) {
+  config.watcher();
+} else {
   console.log('supervisor running without clustering (unsupervised)');
 }
 
