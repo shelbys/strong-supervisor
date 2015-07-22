@@ -124,7 +124,7 @@ function displayStatusResponse(rsp) {
 
 function requestSetSize() {
   request.cmd = 'set-size';
-  request.size = parseInt(requiredArg(), 10);
+  request.size = requiredArg();
 }
 
 function requestStop() {
@@ -167,6 +167,7 @@ function requestCpuStart() {
   request.cmd = 'start-cpu-profiling';
   request.target = requiredArg();
   request.timeout = optionalArg(0) | 0;
+  request.stallout = optionalArg(0) | 0;
   display = function() {
     console.log('Profiler started, use cpu-stop to get profile.');
   };
@@ -178,14 +179,24 @@ function requestCpuStop() {
   request.cmd = 'stop-cpu-profiling';
   request.target = target;
   // .cpuprofile extention Required by Chrome
-  request.filePath = path.resolve(name + '.cpuprofile');
+  var filePath = path.resolve(name + '.cpuprofile');
 
   display = function(res) {
-    if (res.error) {
-      return console.log('Unable to write CPU profile to `%s`: %s', res.error);
+    if (!res.error) {
+      try {
+        fs.writeFileSync(filePath, res.profile);
+      } catch (err) {
+        res.error = err.message;
+      }
     }
+
+    if (res.error) {
+      error('Unable to write CPU profile to `%s`: %s', filePath, res.error);
+      return;
+    }
+
     console.log('CPU profile written to `%s`, load into Chrome Dev Tools',
-      res.filePath);
+      filePath);
   };
 }
 
@@ -194,14 +205,24 @@ function requestHeapSnapshot() {
   var name = optionalArg(util.format('node.%s', target));
   request.cmd = 'heap-snapshot';
   request.target = target;
-  request.filePath = path.resolve(name + '.heapsnapshot');
+  var filePath = path.resolve(name + '.heapsnapshot');
 
   display = function(res) {
-    if (res.error) {
-      return console.log('Unable to write heap to `%s`: %s', res.error);
+    if (!res.error) {
+      try {
+        fs.writeFileSync(filePath, res.profile);
+      } catch (err) {
+        res.error = err.message;
+      }
     }
+
+    if (res.error) {
+      error('Unable to write heap to `%s`: %s', filePath, res.error);
+      return;
+    }
+
     console.log('Heap written to `%s`, load into Chrome Dev Tools',
-      res.filePath);
+      filePath);
   };
 }
 
