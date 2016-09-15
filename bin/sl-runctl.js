@@ -1,5 +1,12 @@
 #!/usr/bin/env node
+// Copyright IBM Corp. 2014,2015. All Rights Reserved.
+// Node module: strong-supervisor
+// This file is licensed under the Artistic License 2.0.
+// License text available at https://opensource.org/licenses/Artistic-2.0
+
 /* eslint no-process-exit:0 */
+
+'use strict';
 
 var argv = process.argv;
 var client = require('strong-control-channel/client');
@@ -29,12 +36,12 @@ var HELP = fs.readFileSync(require.resolve('./sl-runctl.txt'), 'utf-8')
   .replace(/%ADDR%/g, ADDR);
 
 var parser = new Parser([
-    ':v(version)',
-    'h(help)',
-    'p:(path)',
-    'p:(port)',
-    'C:(control)',
-  ].join(''), argv);
+  ':v(version)',
+  'h(help)',
+  'p:(path)',
+  'p:(port)',
+  'C:(control)',
+].join(''), argv);
 
 var option;
 while ((option = parser.getopt()) !== undefined) {
@@ -94,6 +101,9 @@ var commands = {
   'env-get': requestEnvGet,
   'env-set': requestEnvSet,
   'env-unset': requestEnvUnSet,
+  'dbg-start': requestDebuggerStart,
+  'dbg-stop': requestDebuggerStop,
+  'dbg-status': requestDebuggerStatus,
 };
 
 var action = commands[command] || invalidCommand;
@@ -101,7 +111,7 @@ var action = commands[command] || invalidCommand;
 action();
 
 function invalidCommand() {
-  error('Invalid command `%s`, try `%s --help`.', $0);
+  error('Invalid command `%s`, try `%s --help`.', command, $0);
 }
 
 function requestStatus() {
@@ -265,6 +275,37 @@ function requestEnvSet() {
 function requestEnvUnSet() {
   request.cmd = 'env-unset';
   request.env = argv.slice(optind++);
+}
+
+function requestDebuggerStart() {
+  request.cmd = 'dbg-start';
+  request.target = requiredArg();
+
+  display = function debuggerStarted(rsp) {
+    if (rsp.error || !rsp.port) {
+      console.error('Unable to start the debugger:', rsp.error || 'unknown');
+    } else {
+      console.log('Debugger listening on port %s', rsp.port);
+    }
+  };
+}
+
+function requestDebuggerStop() {
+  request.cmd = 'dbg-stop';
+  request.target = requiredArg();
+}
+
+function requestDebuggerStatus() {
+  request.cmd = 'dbg-status';
+  request.target = requiredArg();
+
+  display = function printDebuggerStatus(rsp) {
+    if (rsp.status.running) {
+      console.log('Debugger listening on port %s', rsp.status.port);
+    } else {
+      console.log('Debugger is disabled.');
+    }
+  };
 }
 
 debug('addr: %j, request: %j', ADDR, request);

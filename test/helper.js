@@ -1,15 +1,27 @@
+// Copyright IBM Corp. 2014,2016. All Rights Reserved.
+// Node module: strong-supervisor
+// This file is licensed under the Artistic License 2.0.
+// License text available at https://opensource.org/licenses/Artistic-2.0
+
+'use strict';
+
 // test globals
-assert = require('assert');
-debug = require('./debug');
-fs = require('fs');
-path = require('path');
-shell = require('shelljs/global');
-util = require('util');
+/* global assert,debug,fs,path,util,exec */
+/* eslint-disable */
+global.assert = require('assert');
+global.debug = require('./debug');
+global.fs = require('fs');
+global.path = require('path');
+global.util = require('util');
+/* eslint-enable */
+
+require('shelljs/global');
 
 // module locals
 var child = require('child_process');
 var control = require('strong-control-channel/process');
 var dgram = require('dgram');
+var sleep = require('sleep').sleep;
 
 // Utility functions
 
@@ -46,7 +58,7 @@ exports.statsd = function statsd(callback) {
     server.port = server.address().port;
     return callback(server);
   }
-}
+};
 
 exports.runCtl = {
   supervise: supervise,
@@ -133,19 +145,13 @@ function runctl(cmd) {
 }
 
 function pause(secs) {
-  var secs = secs || 1;
-  var start = process.hrtime();
-  while (true) {
-    var ts = process.hrtime(start);
-    if (ts[0] >= secs)
-      return;
-  }
+  sleep(secs || 1);
 }
 
 global.pause = pause;
 
 exports.runWithControlChannel = function(appWithArgs, runArgs, onMessage) {
-  if (onMessage == undefined && typeof runArgs === 'function') {
+  if (onMessage === undefined && typeof runArgs === 'function') {
     onMessage = runArgs;
     runArgs = [];
   }
@@ -160,7 +166,7 @@ exports.runWithControlChannel = function(appWithArgs, runArgs, onMessage) {
   var options = {
     stdio: [0, 1, 2, 'ipc'],
     env: util._extend({
-      SL_ENV: 'test',
+      STRONGLOOP_BASE_INTERVAL: 500,
       STRONGLOOP_FLUSH_INTERVAL: 2,
     }, process.env),
   };

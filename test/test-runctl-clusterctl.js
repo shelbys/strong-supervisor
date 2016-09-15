@@ -1,3 +1,10 @@
+// Copyright IBM Corp. 2014,2015. All Rights Reserved.
+// Node module: strong-supervisor
+// This file is licensed under the Artistic License 2.0.
+// License text available at https://opensource.org/licenses/Artistic-2.0
+
+'use strict';
+
 var helper = require('./helper');
 var os = require('os');
 var tap = require('tap');
@@ -69,8 +76,12 @@ tap.test('runctl via clusterctl', function(t) {
     waiton('status', /worker id 4:/);
   }, 'status worker id 4');
 
+  // cluster restart is start/kill, not kill/start, so we need
+  // to wait for the cluster size to be 2 instead of assuming it is
+  // 2 after we see worker 4, because that will happen before the
+  // restart is completely finished
   t.doesNotThrow(function() {
-    expect('status', /worker count: 2/);
+    waiton('status', /worker count: 2/);
   }, 'status worker count 2');
 
   t.doesNotThrow(function() {

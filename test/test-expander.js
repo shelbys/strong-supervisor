@@ -1,10 +1,14 @@
+// Copyright IBM Corp. 2014,2016. All Rights Reserved.
+// Node module: strong-supervisor
+// This file is licensed under the Artistic License 2.0.
+// License text available at https://opensource.org/licenses/Artistic-2.0
+
 'use strict';
 
-var assert = require('assert');
-
 var expander = require('../lib/expander');
+var tap = require('tap');
 
-describe('expander.expand', function() {
+tap.test('expander.expand', function(t) {
   var example_worker = {
     id: 1,
     pid: 1234,
@@ -25,10 +29,13 @@ describe('expander.expand', function() {
       expect: 'undefined.false.0[null]' },
   ];
 
-  examples.forEach(function (e) {
-    it('generates "' + e.expect + '" from "' + e.given + '"', function() {
+  examples.forEach(function(e) {
+    t.test('generates "' + e.expect + '" from "' + e.given + '"', function(t) {
       var result = expander.expand.apply(null, e.given);
-      assert.equal(result, e.expect);
+      t.equal(result, e.expect);
+      t.end();
     });
   });
+
+  t.end();
 });

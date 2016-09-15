@@ -1,11 +1,16 @@
+// Copyright IBM Corp. 2014,2016. All Rights Reserved.
+// Node module: strong-supervisor
+// This file is licensed under the Artistic License 2.0.
+// License text available at https://opensource.org/licenses/Artistic-2.0
+
 'use strict';
 
-var assert = require('assert');
+var tap = require('tap');
 var util = require('util');
 
 var printfReplacer = require('../lib/printf-replacer');
 
-describe('printfReplacer', function() {
+tap.test('printfReplacer', function(t) {
   var examples = [
     { given: ['%a'],
       expect: '%a' },
@@ -22,12 +27,15 @@ describe('printfReplacer', function() {
     { given: ['%h\nmiddle\n%i', {h: 'TOP', i: 'BOTTOM'}],
       expect: 'TOP\nmiddle\nBOTTOM' },
   ];
-  examples.forEach(function (example) {
+  examples.forEach(function(example) {
     var description = util.format('transforms %j into %j',
                                   example.given[0], example.expect);
-    it(description, function() {
+    t.test(description, function(t) {
       var result = printfReplacer.apply(null, example.given);
-      assert.equal(result, example.expect);
+      t.equal(result, example.expect);
+      t.end();
     });
   });
+
+  t.end();
 });

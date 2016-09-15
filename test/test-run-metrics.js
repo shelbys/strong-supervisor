@@ -1,3 +1,10 @@
+// Copyright IBM Corp. 2014,2016. All Rights Reserved.
+// Node module: strong-supervisor
+// This file is licensed under the Artistic License 2.0.
+// License text available at https://opensource.org/licenses/Artistic-2.0
+
+'use strict';
+
 var Graphite = require('strong-statsd/test/servers/graphite');
 var Splunk = require('strong-statsd/test/servers/splunk');
 var Statsd = require('strong-statsd/test/servers/statsd');
@@ -9,12 +16,15 @@ var cp = require('child_process');
 var debug = require('./debug');
 var fs = require('fs');
 var helper = require('./helper');
-var nodeSyslog = require('strong-fork-syslog');
 var path = require('path');
 var tap = require('tap');
 var util = require('util');
 
-tap.test('metrics', function(t) {
+var skipIfNoLicense = process.env.STRONGLOOP_LICENSE
+                    ? false
+                    : {skip: 'tested feature requires license'};
+
+tap.test('metrics', skipIfNoLicense, function(t) {
   var appPath = require.resolve('./module-app');
   var plan = 15; // for internal
   var runArgs = [

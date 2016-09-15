@@ -1,10 +1,215 @@
+2016-09-12, Version 5.0.0
+=========================
+
+ * package: byline is only a dev dependency (Sam Roberts)
+
+ * package: update async to 2.x (Sam Roberts)
+
+ * package: update byline to 5.x (Sam Roberts)
+
+ * package: update lodash to 4.x (Sam Roberts)
+
+ * capabilities: remove dead code (Sam Roberts)
+
+ * Replace strong-agent with appmetrics (T. Corbin)
+
+ * Remove debug() stack trace when debugger missing (Sam Roberts)
+
+ * test: use sleep instead of try-thread-sleep (Sam Roberts)
+
+ * agent-trace: remove, it was never used (Sam Roberts)
+
+ * Use strict in the test code (Sam Roberts)
+
+ * Add 'use strict' to files (Kevin Delisle)
+
+ * Update URLs in CONTRIBUTING.md (#196) (Ryan Graham)
+
+ * test: remove unnecessary dependency on loopback@1 (Sam Roberts)
+
+ * package: update tap to 6.x (Sam Roberts)
+
+ * Remove startup variations related to StrongOps (Sam Roberts)
+
+ * usage: copy edit description of start script use (Sam Roberts)
+
+ * Remove support for running unclustered (Sam Roberts)
+
+ * options: cluster default always CPU (Sam Roberts)
+
+ * test: refactor supervisor test to tap (Sam Roberts)
+
+ * test: rework printf-replacer mocha test to tap (Sam Roberts)
+
+ * test: remove metrics, it no longer applies (Sam Roberts)
+
+ * test: refactor pidfile mocha test to tap (Sam Roberts)
+
+ * test: refactor expander mocha test to tap (Sam Roberts)
+
+ * test: refactor chdir mocha test to tap (Sam Roberts)
+
+ * test: run tests until done, not first failure (Sam Roberts)
+
+ * package: update tap to 5.x (Sam Roberts)
+
+ * update copyright notices and license (Ryan Graham)
+
+
+2016-05-05, Version 3.3.3
+=========================
+
+ * package: remove strong-debugger (Sam Roberts)
+
+ * package: ignore test output (Sam Roberts)
+
+
+2016-04-11, Version 3.3.2
+=========================
+
+ * package: update to eslint@2, lint test/ (Sam Roberts)
+
+ * Update usage in README (Sam Roberts)
+
+ * lint: fix style warnings in lib/logger.js (Ben Noordhuis)
+
+ * Refer to licenses with a link (Sam Roberts)
+
+
+2015-10-28, Version 3.3.1
+=========================
+
+ * lint: update to eslint@1 and strongloop rules (Ryan Graham)
+
+ * Fix incorrect handling of relative symlinks (Ryan Graham)
+
+
+2015-10-14, Version 3.3.0
+=========================
+
+ * Rework debugger as an optional capability (Miroslav Bajtoš)
+
+ * fix regression in handling of symlinked pwd (Ryan Graham)
+
+
+2015-10-05, Version 3.2.2
+=========================
+
+ * runctl: only restart when tracing is changing (Sam Roberts)
+
+
+2015-09-28, Version 3.2.1
+=========================
+
+ * package: make binary debugger an optional dep (Sam Roberts)
+
+ * Use strongloop conventions for licensing (Sam Roberts)
+
+ * Report debuggerVersion in status messages (Miroslav Bajtoš)
+
+
+2015-09-15, Version 3.2.0
+=========================
+
+ * test: improve assertion messages (Miroslav Bajtoš)
+
+ * Add a new notification: 'debugger-status' (Miroslav Bajtoš)
+
+ * runctl: new commands dbg-start and dbg-stop (Miroslav Bajtoš)
+
+ * runctl: re-chdir to PWD on restart (Sam Roberts)
+
+ * test: update to tap@1.3.4 (Sam Roberts)
+
+ * test: only test watchdog if agent says it works (Ryan Graham)
+
+ * Use modern-syslog, not our fork of node-syslog (Sam Roberts)
+
+ * test: adjust restart order assumption (Ryan Graham)
+
+ * test: use worker 2 for tests (Ryan Graham)
+
+ * test: don't require strong-fork-syslog (Ryan Graham)
+
+ * test: replace SL_ENV usage (Ryan Graham)
+
+ * test: test smart profiling on non-Linux (Ryan Graham)
+
+ * test: make v1-app more interesting to profiler (Ryan Graham)
+
+ * deps: upgrade to strong-agent@2 (Ryan Graham)
+
+
+2015-07-21, Version 3.0.2
+=========================
+
+ * runctl: fork ppid should not depend on msg order (Sam Roberts)
+
+
+2015-07-20, Version 3.0.1
+=========================
+
+
+
+2015-07-20, Version 3.0.0
+=========================
+
+ * fix accidental heapdump generation on log re-open (Ryan Graham)
+
+ * test: use try-thread-sleep to speed up tests (Ryan Graham)
+
+ * test: skip tests that require license (Ryan Graham)
+
+ * run: print cleaner error when WS channel dies (Ryan Graham)
+
+ * test: fix test-ipcctl-notifications (Ryan Graham)
+
+ * runctl: ws errors are fatal in new api (Sam Roberts)
+
+ * ws: reconnect WS ctl channel on error (Ryan Graham)
+
+ * update dependencies (Ryan Graham)
+
+ * run: ws endpoint now has default (Sam Roberts)
+
+ * Implement Capabilities API (Setogit)
+
+ * runctl: handle signal-type messages (Bert Belder)
+
+ * fix regression in PWD/CWD handling caused by #142 (Ryan Graham)
+
+ * run: support simple start scripts as fallback (Ryan Graham)
+
+ * refactor: app path resolution (Ryan Graham)
+
+ * refactor: extract app path lookup as function (Ryan Graham)
+
+ * make status message as complete as started message (Ryan Graham)
+
+ * disable node core timer wrapping for tracing navigation clarity (Tetsuo Seto)
+
+ * Override hostname returned in trace packet (Krishna Raman)
+
+ * add agent probes to the black list (Tetsuo Seto)
+
+ * honour path in --control ws:url/path (Ryan Graham)
+
+ * Use worker-id (wid) consistently in notifications (Krishna Raman)
+
+ * Add new fields to started message (Krishna Raman)
+
+ * package: use SPDX expression for license (Ryan Graham)
+
+ * Add Capability API Support (Joseph Tary)
+
+ * Allow WS channel in standalone mode (Krishna Raman)
+
 2015-06-22, Version 2.0.2
 =========================
 
  * disable node core timer wrapping for tracing navigation clarity (Tetsuo Seto)
 
  * add agent probes to the black list (Tetsuo Seto)
-
 
 2015-06-03, Version 2.0.0
 =========================

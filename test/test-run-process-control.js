@@ -1,6 +1,14 @@
+// Copyright IBM Corp. 2014,2015. All Rights Reserved.
+// Node module: strong-supervisor
+// This file is licensed under the Artistic License 2.0.
+// License text available at https://opensource.org/licenses/Artistic-2.0
+
+'use strict';
+
 var control = require('strong-control-channel/process');
 var cp = require('child_process');
 var debug = require('./debug');
+var os = require('os');
 var tap = require('tap');
 
 var options = {stdio: [0, 1, 2, 'ipc']};
@@ -22,6 +30,12 @@ tap.test('status', function(t) {
     t.equal(rsp.workers.length, 0, 'no workers');
     t.equal(rsp.appName, 'yes-app', 'appName');
     t.assert(/^\d+\.\d+\.\d+/.test(rsp.agentVersion), 'agentVersion');
+    t.match(rsp.osVersion, {
+      platform: os.platform(),
+      arch: os.arch(),
+      release: os.release(),
+    }, 'osVersion');
+    t.match(rsp.nodeVersion, process.version, 'nodeVersion');
     t.end();
   });
 });

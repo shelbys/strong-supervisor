@@ -1,3 +1,8 @@
+// Copyright IBM Corp. 2015. All Rights Reserved.
+// Node module: strong-supervisor
+// This file is licensed under the Artistic License 2.0.
+// License text available at https://opensource.org/licenses/Artistic-2.0
+
 'use strict';
 
 var Central = require('strong-control-channel/test/mock-server');
@@ -36,8 +41,8 @@ test('with env', function(control) {
 });
 
 function test(name, fork) {
-  tap.test('with env', function(t) {
-    var central = new Central('supervisor-control', onRequest, onListening);
+  tap.test(name, function(t) {
+    var central = new Central('test-control', onRequest, onListening);
     t.on('end', central.stop.bind(central));
 
     function onListening(control) {

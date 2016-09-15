@@ -1,3 +1,8 @@
+// Copyright IBM Corp. 2015. All Rights Reserved.
+// Node module: strong-supervisor
+// This file is licensed under the Artistic License 2.0.
+// License text available at https://opensource.org/licenses/Artistic-2.0
+
 'use strict';
 
 var debug = require('./debug');
@@ -8,7 +13,11 @@ var w = require('./watcher');
 var Worker = w.Worker;
 var watcher = w.watcher;
 
-tap.test('trace-object', function(t) {
+var skipIfNoLicense = process.env.STRONGLOOP_LICENSE
+                    ? false
+                    : {skip: 'tested feature requires license'};
+
+tap.test('trace-object', skipIfNoLicense, function(t) {
   w.select('trace-object');
 
   t.test('in worker, tracing disabled', function(tt) {
@@ -48,4 +57,5 @@ tap.test('trace-object', function(t) {
     }
   });
 
+  t.end();
 });

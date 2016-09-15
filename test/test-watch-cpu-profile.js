@@ -1,3 +1,8 @@
+// Copyright IBM Corp. 2015,2016. All Rights Reserved.
+// Node module: strong-supervisor
+// This file is licensed under the Artistic License 2.0.
+// License text available at https://opensource.org/licenses/Artistic-2.0
+
 'use strict';
 
 var agent = require('../lib/agent')();
@@ -10,15 +15,15 @@ var Worker = w.Worker;
 var ParentCtl = w.ParentCtl;
 var watcher = w.watcher;
 
-var skipIfNotLinux = process.platform !== 'linux'
-                   ? {skip: 'linux only feature'}
-                   : false;
+var skipUnlessWatchdog = agent.internal.supports.watchdog
+                       ? false
+                       : {skip: 'watchdog not supported'};
 
 function stall(count) {
   agent.internal.emit('watchdogActivationCount', count);
 }
 
-tap.test('cpu-profile', skipIfNotLinux || function(t) {
+tap.test('cpu-profile', skipUnlessWatchdog || function(t) {
   w.select('cpu-profile');
 
   t.test('in worker', function(tt) {
@@ -56,12 +61,14 @@ tap.test('cpu-profile', skipIfNotLinux || function(t) {
       stall(2);
     });
 
+    tt.end();
+
     function send(msg, type) {
       if (hook) hook(msg, type);
     }
   });
 
-  t.test('in master', skipIfNotLinux || function(tt) {
+  t.test('in master', function(tt) {
     var parentCtl = ParentCtl(notify);
     var cluster = Master();
     watcher.start(parentCtl, cluster, cluster);
@@ -85,11 +92,13 @@ tap.test('cpu-profile', skipIfNotLinux || function(t) {
         tt.equal(msg.wid, worker.id);
       } else {
         tt.equal(msg.cmd, 'cpu-profiling');
-        tt.equal(msg.id, worker.id);
+        tt.equal(msg.wid, worker.id);
         tt.equal(msg.isRunning, false);
         tt.equal(msg.pid, worker.process.pid);
         tt.equal(msg.pst, worker.startTime);
       }
     }
   });
+
+  t.end();
 });

@@ -1,3 +1,10 @@
+// Copyright IBM Corp. 2014,2015. All Rights Reserved.
+// Node module: strong-supervisor
+// This file is licensed under the Artistic License 2.0.
+// License text available at https://opensource.org/licenses/Artistic-2.0
+
+'use strict';
+
 var EE = require('events').EventEmitter;
 var cluster = require('cluster');
 var helper = require('./helper');
@@ -45,7 +52,7 @@ tap.test('fork2', function(t) {
 
 function assertFork(data, t, id) {
   t.equal(data.cmd, 'fork');
-  t.equal(data.id, id);
+  t.equal(data.wid, id);
   t.assert(data.pid > 0, 'pid');
   t.assert(data.pst > 0, 'pst');
   t.end();
