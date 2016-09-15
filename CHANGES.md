@@ -204,6 +204,12 @@
 
  * Allow WS channel in standalone mode (Krishna Raman)
 
+2015-06-22, Version 2.0.2
+=========================
+
+ * disable node core timer wrapping for tracing navigation clarity (Tetsuo Seto)
+
+ * add agent probes to the black list (Tetsuo Seto)
 
 2015-06-03, Version 2.0.0
 =========================
@@ -505,10 +511,6 @@
  * run: directly support statsd backends (Sam Roberts)
 
  * test: delete STRONGLOOP_METRICS after each test (Sam Roberts)
-
-
-2014-11-03, Version 1.1.1
-=========================
 
  * run: refactor usage into a text file (Sam Roberts)
 
